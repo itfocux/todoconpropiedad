@@ -1,5 +1,16 @@
 import { NextResponse } from "next/server";
 
+export async function OPTIONS() {
+    return NextResponse.json({}, { 
+        status: 200,
+        headers: new Headers({
+        "Access-Control-Allow-Origin": "*",  // Allow all origins
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        }),
+    });
+}
+
 export async function POST(req: Request) {
     try {
         const body = await req.json();
@@ -40,10 +51,14 @@ export async function POST(req: Request) {
             throw new Error(errorData.message || "Error al enviar datos a HubSpot");
         }
 
-        return NextResponse.json({
-            success: true,
-            message: "Contacto enviado con éxito",
-        });
+        return NextResponse.json(
+            { success: true, message: "Contact sent to HubSpot successfully" },
+            {
+              headers: new Headers({
+                "Access-Control-Allow-Origin": "*", // Allow all origins
+              }),
+            }
+        );
     } catch (error: any) {
         return NextResponse.json(
             { success: false, message: error.message },
