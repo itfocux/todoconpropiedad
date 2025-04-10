@@ -156,14 +156,14 @@ export async function POST(req: Request) {
         const product: Inmueble = await responseSimi.json();
 
         const dataInmuebleCreate: any= { properties: {
-            name: `${product.Tipo_Inmueble}-${product.idInm}`,
+            name: `${product.Tipo_Inmueble} en ${product.Gestion} ${product.barrio} ${product.ciudad}`,
             hs_sku: product.idInm,
             codigo_inmueble: product.idInm,
-            fingreso: product.FConsignacion, // Descripción del producto
-            alcobas: product.alcobas, // Precio del producto
-            banios: product.banos, // Tipo de producto (opcional)
-            garaje: product.garaje, // Código SKU del producto
-            estadoinmueble: product.DescEstado, // Precio en HubSpot
+            fingreso: product.FConsignacion,
+            alcobas: product.alcobas,
+            banios: product.banos,
+            garaje: product.garaje,
+            estadoinmueble: product.DescEstado,
             administracion: product.Administracion,
             estrato: product.Estrato,
             tipo_inmueble: product.Tipo_Inmueble,
@@ -186,7 +186,7 @@ export async function POST(req: Request) {
         }}
 
         const dataInmuebleUpdate: any= { properties: {
-            name: `${product.Tipo_Inmueble}-${product.idInm}`,
+            name: `${product.Tipo_Inmueble} en ${product.Gestion} ${product.barrio} ${product.ciudad}`,
             codigo_inmueble: product.idInm,
             fingreso: product.FConsignacion, // Descripción del producto
             alcobas: product.alcobas, // Precio del producto
@@ -269,10 +269,11 @@ export async function POST(req: Request) {
          // 5. Create deal
         const newDeal = await fetchHubSpot('/crm/v3/objects/deals', 'POST', {
             properties: {
-                dealname: `Interés en ${product.Tipo_Inmueble}-${product.idInm}`,
+                dealname: `Interés en ${product.Tipo_Inmueble}-${product.idInm}-${firstname}`,
                 pipeline: 'default',
                 dealstage: 'appointmentscheduled',
                 amount: precio,
+                mensaje_formulario: mensaje_formulario
             }
         });
 
@@ -287,7 +288,7 @@ export async function POST(req: Request) {
             },
             body: JSON.stringify({
             properties: {
-                name: `${product.Tipo_Inmueble}-${product.idInm}`,
+                name: `${product.Tipo_Inmueble}-${product.idInm}-${firstname}`,
                 quantity: 1,
                 price: precio, // example price
             }
@@ -296,7 +297,6 @@ export async function POST(req: Request) {
   
         const lineItemData = await lineItemRes.json();
         const lineItemId = lineItemData.id;
-        console.log('lineItem', lineItemId);
   
         // 1. Associate Line Item with Product
         await fetch(`https://api.hubapi.com/crm/v4/objects/line_items/${lineItemId}/associations/products/${productId}`, {
