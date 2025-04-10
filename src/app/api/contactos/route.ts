@@ -154,6 +154,8 @@ export async function POST(req: Request) {
         });
 
         const product: Inmueble = await responseSimi.json();
+        const asesorProduct = `${product.asesor[0].ntercero} - ${product.asesor[0].correo}`
+        const captadorProduct = `${product.captador[0].ntercero} - ${product.captador[0].correo}`
 
         const dataInmuebleCreate: any= { properties: {
             name: `${product.Tipo_Inmueble} en ${product.Gestion} ${product.barrio} ${product.ciudad}`,
@@ -182,7 +184,9 @@ export async function POST(req: Request) {
             zona: product.zona,
             sede: product.sede,
             amobladoinmueble: product.amobladoInmueble,
-            admonincluida: product.AdmonIncluida
+            admonincluida: product.AdmonIncluida,
+            asesor: asesorProduct,
+            captador:captadorProduct
         }}
 
         const dataInmuebleUpdate: any= { properties: {
@@ -211,7 +215,9 @@ export async function POST(req: Request) {
             zona: product.zona,
             sede: product.sede,
             amobladoinmueble: product.amobladoInmueble,
-            admonincluida: product.AdmonIncluida
+            admonincluida: product.AdmonIncluida,
+            asesor: asesorProduct,
+            captador:captadorProduct
         }}
 
         const productSearch = await fetchHubSpot('/crm/v3/objects/products/search', 'POST', {
@@ -273,7 +279,8 @@ export async function POST(req: Request) {
                 pipeline: 'default',
                 dealstage: 'appointmentscheduled',
                 amount: precio,
-                mensaje_formulario: mensaje_formulario
+                mensaje_formulario: mensaje_formulario,
+                asesor_negocio: asesorProduct
             }
         });
 
