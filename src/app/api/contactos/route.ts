@@ -262,6 +262,7 @@ export async function POST(req: Request) {
             const newContact = await fetchHubSpot('/crm/v3/objects/contacts', 'POST', {
                 properties: {
                     firstname: firstname,
+                    lastname: lastname,
                     email: email,
                     phone: phone,
                     mensaje_formulario: mensaje_formulario,
