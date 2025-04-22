@@ -307,7 +307,7 @@ export async function POST(req: Request) {
                 amount: precio,
                 mensaje_formulario: mensaje_formulario,
                 asesor_negocio: asesorProduct,
-                hubspot_owner_id: contactIdAsesor
+                // hubspot_owner_id: contactIdAsesor
             }
         });
 
