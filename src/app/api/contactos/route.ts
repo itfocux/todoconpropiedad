@@ -271,17 +271,43 @@ export async function POST(req: Request) {
             contactId = newContact.id;
         }
 
+        let contactIdAsesor: string;
+
+        const contactSearchAsesor = await fetchHubSpot('/crm/v3/objects/contacts/search', 'POST', {
+            filterGroups: [{
+                filters: [{
+                propertyName: 'email',
+                operator: 'EQ',
+                value: product.asesor[0].correo,
+                }]
+            }]
+        });
+
+        if (contactSearchAsesor.total > 0) {
+            contactIdAsesor = contactSearchAsesor.results[0].id;
+        } else {
+            const newContactAsesor = await fetchHubSpot('/crm/v3/objects/contacts', 'POST', {
+                properties: {
+                    firstname: product.asesor[0].ntercero,
+                    email: product.asesor[0].correo,
+                    phone: product.asesor[0].celular,
+                }
+        });
+            contactIdAsesor = newContactAsesor.id;
+        }
+
         const precio = product.ValorVenta == '0' ? parseFloat(product.ValorCanon.replace(/,/g, '')) : parseFloat(product.ValorVenta.replace(/,/g, ''));
 
          // 5. Create deal
         const newDeal = await fetchHubSpot('/crm/v3/objects/deals', 'POST', {
             properties: {
-                dealname: `Interés en ${product.Tipo_Inmueble}-${product.idInm}-${firstname}`,
+                dealname: `Interés en ${product.Tipo_Inmueble}-${product.idInm}-${firstname}-${lastname}`,
                 pipeline: 'default',
                 dealstage: 'appointmentscheduled',
                 amount: precio,
                 mensaje_formulario: mensaje_formulario,
-                asesor_negocio: asesorProduct
+                asesor_negocio: asesorProduct,
+                hubspot_owner_id: contactIdAsesor
             }
         });
 
