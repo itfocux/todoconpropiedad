@@ -268,7 +268,7 @@ export async function POST(req: Request) {
                     email: email,
                     phone: phone,
                     mensaje_formulario: mensaje_formulario,
-                    aceptacion_de_la_politica_de_privacidad_y_tratamiento_de_datos: tratamiento_datos ? '1' : '0'
+                    aceptacion_de_la_politica_de_privacidad_y_tratamiento_de_datos: tratamiento_datos
                 }
         });
             contactId = newContact.id;
@@ -406,6 +406,7 @@ export async function POST(req: Request) {
             }
         );
     } catch (error: any) {
+        console.log('Hubo un error en la integracion del formulario con hubspot', error.message)
         return NextResponse.json(
             { success: false, message: error.message },
             { status: 500 }
