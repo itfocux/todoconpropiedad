@@ -188,7 +188,8 @@ export async function POST(req: Request) {
             amobladoinmueble: product.amobladoInmueble,
             admonincluida: product.AdmonIncluida,
             asesor: asesorProduct,
-            captador:captadorProduct
+            captador:captadorProduct,
+            link_interna_wordpress: 'https://todoconpropiedad.com/inmudetalle/?id=' + product.idInm
         }}
 
         const dataInmuebleUpdate: any= { properties: {
@@ -219,7 +220,8 @@ export async function POST(req: Request) {
             amobladoinmueble: product.amobladoInmueble,
             admonincluida: product.AdmonIncluida,
             asesor: asesorProduct,
-            captador:captadorProduct
+            captador:captadorProduct,
+            link_interna_wordpress: 'https://todoconpropiedad.com/inmudetalle/?id=' + product.idInm
         }}
 
         const productSearch = await fetchHubSpot('/crm/v3/objects/products/search', 'POST', {
