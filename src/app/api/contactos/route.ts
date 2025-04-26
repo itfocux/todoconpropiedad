@@ -18,6 +18,7 @@ interface IdatosFormulario {
     email:string
     phone: string
     mensaje_formulario: string
+    tratamiento_datos: boolean
 }
 
 interface AsesorData {
@@ -143,6 +144,7 @@ export async function POST(req: Request) {
             mensaje_formulario,
             phone,
             email,
+            tratamiento_datos,
         } = body;
 
         const responseSimi: any = await fetch(urlSimi + codigo_inmueble, {
@@ -266,6 +268,7 @@ export async function POST(req: Request) {
                     email: email,
                     phone: phone,
                     mensaje_formulario: mensaje_formulario,
+                    aceptacion_de_la_politica_de_privacidad_y_tratamiento_de_datos: tratamiento_datos ? '1' : '0'
                 }
         });
             contactId = newContact.id;
