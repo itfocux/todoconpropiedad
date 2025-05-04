@@ -270,7 +270,8 @@ export async function POST(req: Request) {
                     email: email,
                     phone: phone,
                     mensaje_formulario: mensaje_formulario,
-                    aceptacion_de_la_politica_de_privacidad_y_tratamiento_de_datos: tratamiento_datos
+                    aceptacion_de_la_politica_de_privacidad_y_tratamiento_de_datos: tratamiento_datos,
+                    canal_de_atribucion_todo_con_propiedad: 'Página Web'
                 }
         });
             contactId = newContact.id;
@@ -312,7 +313,7 @@ export async function POST(req: Request) {
                 amount: precio,
                 mensaje_formulario: mensaje_formulario,
                 asesor_negocio: asesorProduct,
-                // hubspot_owner_id: contactIdAsesor
+                hubspot_owner_id: 79691639
             }
         });
 
