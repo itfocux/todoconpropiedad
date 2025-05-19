@@ -313,7 +313,9 @@ export async function POST(req: Request) {
                 amount: precio,
                 mensaje_formulario: mensaje_formulario,
                 asesor_negocio: asesorProduct,
-                nuevo_negocio: 'SI'
+                nuevo_negocio: 'SI',
+                gestion: product.Gestion,
+                ciudad: product.ciudad
                 // hubspot_owner_id: 79691639
             }
         });
