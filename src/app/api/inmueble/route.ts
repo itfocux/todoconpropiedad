@@ -112,6 +112,8 @@ const fetchHubSpot = async (url: string, method = 'GET', body?: any) => {
         throw new Error(JSON.stringify(error));
     }
 
+    if (response.status === 204) return null;
+
     return response.json();
 };
 
@@ -239,3 +241,56 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
+
+export async function DELETE(req: Request) {
+    try {
+      if (!HUBSPOT_API_KEY) {
+        return NextResponse.json(
+          { success: false, message: "HubSpot token is missing" },
+          { status: 500 }
+        );
+      }
+  
+      const { codigo_inmueble } = await req.json();
+  
+      if (!codigo_inmueble) {
+        return NextResponse.json(
+          { success: false, message: "Código del inmueble no proporcionado" },
+          { status: 400 }
+        );
+      }
+  
+      // Buscar el producto por código (hs_sku)
+
+      const searchResponse = await fetchHubSpot('/crm/v3/objects/products/search', 'POST', {
+        filterGroups: [{
+          filters: [{
+            propertyName: 'hs_sku',
+            operator: 'EQ',
+            value: codigo_inmueble,
+          }]
+        }],
+        properties: ['hs_object_id', 'name', 'hs_sku'],
+    });
+
+      if (searchResponse.total === 0) {
+        return NextResponse.json(
+          { success: false, message: 'Producto no encontrado con el código proporcionado' },
+          { status: 404 }
+        );
+      }
+  
+      const productId = searchResponse.results[0].id;
+  
+      // Eliminar el producto
+      await fetchHubSpot(`/crm/v3/objects/products/${productId}`, 'DELETE');
+  
+      return NextResponse.json({ success: true, message: 'Producto eliminado exitosamente' }, { status: 200 });
+    } catch (error: any) {
+      return NextResponse.json(
+        { success: false, message: `Error al eliminar producto: ${error.message}` },
+        { status: 500 }
+      );
+    }
+  }
+  
