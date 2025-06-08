@@ -19,7 +19,6 @@ interface IdatosFormulario {
     city: string
     consigna_inmueble_tipo_de_gestion: string
     tipo_de_inmueble_formulario_web: string
-    mensaje_formulario: string
     tratamiento_datos: boolean
 }
 
@@ -78,7 +77,7 @@ export async function POST(req: Request) {
 
         if (contactSearch.total > 0) {
             contactId = contactSearch.results[0].id;
-            const updateContact = await fetchHubSpot(`/crm/v3/objects/contacts/${contactId}`, 'PATCH', {
+            await fetchHubSpot(`/crm/v3/objects/contacts/${contactId}`, 'PATCH', {
                 properties: { ...formData, aceptacion_de_la_politica_de_privacidad_y_tratamiento_de_datos: tratamiento_datos, email, consignatario: 'SI', hubspot_owner_id: 79691639, hs_lead_status: 'Lead Nuevo' }
             });
         } else {
