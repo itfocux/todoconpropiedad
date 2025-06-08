@@ -17,7 +17,6 @@ interface IdatosFormulario {
     lastname?: string
     email:string
     phone: string
-    mensaje_formulario: string
     tratamiento_datos: boolean
 }
 
@@ -141,7 +140,6 @@ export async function POST(req: Request) {
             codigo_inmueble,
             firstname,
             lastname,
-            mensaje_formulario,
             phone,
             email,
             tratamiento_datos,
@@ -269,7 +267,6 @@ export async function POST(req: Request) {
                     lastname: lastname,
                     email: email,
                     phone: phone,
-                    mensaje_formulario: mensaje_formulario,
                     aceptacion_de_la_politica_de_privacidad_y_tratamiento_de_datos: tratamiento_datos,
                     canal_de_atribucion_todo_con_propiedad: 'Página Web'
                 }
@@ -311,7 +308,6 @@ export async function POST(req: Request) {
                 pipeline: 'default',
                 dealstage: 'appointmentscheduled',
                 amount: precio,
-                mensaje_formulario: mensaje_formulario,
                 asesor_negocio: asesorProduct,
                 nuevo_negocio: 'SI',
                 gestion: product.Gestion,
